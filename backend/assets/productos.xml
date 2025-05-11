@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<productos>
+  <producto>
+    <id>200001</id>
+    <nombre>Tamal Verde</nombre>
+    <precio>22</precio>
+    <cantidad>34</cantidad>
+    <imagen>assets/tamalverde.jpg</imagen>
+    <descripcion>Este tamal es verde waos</descripcion>
+  </producto>
+  <producto>
+    <id>200002</id>
+    <nombre>Tamal Rojo</nombre>
+    <precio>22</precio>
+    <cantidad>21</cantidad>
+    <imagen>assets/tamalrojo.jpg</imagen>
+  </producto>
+  <producto>
+    <id>200003</id>
+    <nombre>Tamal Dulce</nombre>
+    <precio>24</precio>
+    <cantidad>11</cantidad>
+    <imagen>assets/tamaldulce.jpg</imagen>
+  </producto>
+  <producto>
+    <id>200004</id>
+    <nombre>Crema</nombre>
+    <precio>10</precio>
+    <cantidad>26</cantidad>
+    <imagen>assets/crema.jpg</imagen>
+  </producto>
+  <producto>
+    <id>200005</id>
+    <nombre>Salsa roja</nombre>
+    <precio>12</precio>
+    <cantidad>23</cantidad>
+    <imagen>assets/salsaroja.jpg</imagen>
+  </producto>
+  <producto>
+    <id>200006</id>
+    <nombre>Salsa Verde</nombre>
+    <precio>12</precio>
+    <cantidad>15</cantidad>
+    <imagen>assets/salsaverde.jpg</imagen>
+  </producto>
+</productos>

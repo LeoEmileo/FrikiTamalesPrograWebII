@@ -1,0 +1,445 @@
+/* ==========================================================================
+   1. VARIABLES GLOBALES
+   ========================================================================== */
+:root {
+  /* Colores */
+  --primario: #E76F51;
+  --secundario: #F4A261;
+  --acento: #E9C46A;
+  --texto: #333333;
+  --fondo-blanco: #FFF8F0;
+  --gris-claro: #F1E9E1;
+
+  /* Tipografía */
+  --fuente-base: 'Arial', sans-serif;
+  --tamaño-base: 16px;
+  --interlineado: 1.6;
+
+  /* Espaciados */
+  --gap: 1rem;
+  --padding-card: 1.25rem;
+  --radio-card: 0.5rem;
+}
+
+/* ==========================================================================
+     2. RESET Y ESTILOS BASE
+     ========================================================================== */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Poppins', sans-serif;
+  font-size: var(--tamaño-base);
+  line-height: var(--interlineado);
+  color: var(--texto);
+  min-height: 100vh;
+  background: linear-gradient(to right,
+      var(--fondo-blanco),
+      var(--acento),
+      var(--primario));
+}
+
+/* Tipografía de títulos */
+h1.page-title {
+  font-family: 'Poppins', serif;
+  text-align: center;
+  font-weight: 600;
+  font-size: 5rem;
+  color: var(--texto);
+}
+
+
+h2.catalog-title,
+h2.inventory-title,
+h2.cart-page-title {
+  font-family: 'Poppins', sans-serif;
+  text-align: center;
+  font-weight: 600;
+  font-size: 3rem;
+  padding-left: 1rem;
+  font-weight: 600;
+  color: var(--texto);
+  margin: var(--gap) 0;
+}
+
+h3,
+h4 {
+  margin: 1rem 0 0.5rem;
+  color: var(--primario);
+  font-weight: 600;
+}
+
+/* ==========================================================================
+     3. HEADER & FOOTER
+     ========================================================================== */
+header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: linear-gradient(to right,
+      var(--secundario),
+      var(--primario));
+  color: var(--fondo-blanco);
+  padding: var(--gap) 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+header .logo {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+header nav a {
+  color: var(--fondo-blanco);
+  margin-left: 1.5rem;
+  text-decoration: none;
+}
+
+header nav a:hover {
+  text-decoration: underline;
+}
+
+footer {
+  background: #333;
+  color: var(--fondo-blanco);
+  text-align: center;
+  padding: var(--gap);
+  margin-top: var(--gap);
+  font-size: 0.9rem;
+}
+
+/* ==========================================================================
+     4. CLASES UTILITARIAS
+     ========================================================================== */
+.container {
+  display: flex;
+  padding: 0 var(--gap);
+  align-items: center;
+}
+
+.full-width {
+  display: block;
+  width: 100%;
+  margin: var(--gap) 0;
+}
+
+/* ==========================================================================
+     5. ESTILOS DE FORMULARIOS (inputs, labels, etc.)
+     ========================================================================== */
+
+input[type=text],
+input[type=password] {
+  appearance: none;
+  border: none;
+  outline: none;
+  border-bottom: .2em solid var(--acento);
+  background: rgba(145, 234, 228, .2);
+  border-radius: .2em .2em 0 0;
+  padding: .4em;
+  color: #4961e7;
+}
+
+
+/* + aquí puedes añadir date, radio, checkbox, etc. */
+
+/* ==========================================================================
+     6. BOTONES
+     ========================================================================== */
+.btn {
+  display: inline-block;
+  padding: 0.7rem 1rem;
+  background: var(--primario);
+  color: var(--fondo-blanco);
+  border: none;
+  border-radius: 0.75rem;
+  cursor: pointer;
+  font-size: var(--tamaño-base);
+  transition: background 0.2s;
+}
+
+.btn:hover {
+  background: var(--acento);
+}
+
+.btn:disabled {
+  background: gray !important;
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+/* Botón secundario */
+.btn-secondary {
+  background: #f2f2f2;
+  color: #333;
+  border: 1px solid #ccc;
+}
+
+.btn-secondary:hover {
+  background: #e0e0e0;
+}
+
+/* Botones compactos */
+.btn.btn-small {
+  width: auto !important;
+  padding: 0.5rem 1rem;
+  font-size: 0.9rem;
+  margin: var(--gap) 0 !important;
+}
+
+.btn-accept {
+  background: #2A9D8F;    
+  color: #fff;
+}
+.btn-accept:hover {
+  background: #21867A;
+}
+
+.btn-modify {
+  background: #2fbbd1;     
+  color: #fff;
+}
+.btn-modify:hover {
+  background: #2fbbd1;
+}
+
+.btn-delete {
+  background: #E63946;    
+  color: #fff;
+}
+.btn-delete:hover {
+  background: #C02F3E;
+}
+
+
+
+
+/* ==========================================================================
+     7. PRODUCTOS / CATÁLOGO
+     ========================================================================== */
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: var(--gap);
+  padding: var(--gap);
+}
+
+.product-card {
+  background: var(--fondo-blanco);
+  border: 4px solid #c8c8c8;
+  border-radius: 6px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.product-card .descripcion {
+  font-size: 0.9rem;
+  color: var(--texto);
+  margin: 0.25rem 0 0.75rem;
+  min-height: 2.5em;  /* opcional, para alinear cards */
+}
+
+
+.product-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.product-card img {
+  width: 100%;
+  aspect-ratio: 4/3;
+  object-fit: cover;
+}
+
+.product-card .info {
+  padding: var(--padding-card);
+  flex: 1;
+}
+
+.product-card h3 {
+  margin: 0 0 0.5rem;
+  color: var(--primario);
+  font-size: 1.75rem;
+}
+
+.product-card p {
+  margin: 0.5rem 0;
+  color: var(--texto);
+  font-size: 1.3rem;
+}
+
+/* ==========================================================================
+     8. CARRITO DE COMPRAS
+     ========================================================================== */
+/* Grid principal */
+.cart-page-title {
+  font-family: 'Open Sans', sans-serif;
+  font-size: 2rem;
+  font-weight: 600;
+  color: var(--primero);
+  text-align: center;
+  margin: var(--gap) 0;
+}
+
+.cart-page {
+  display: grid;
+  grid-template-columns: 1fr 300px;
+  gap: var(--gap);
+  padding: var(--gap);
+}
+
+/* Contenido productos */
+.cart-main {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap);
+}
+
+.cart-items {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap);
+}
+
+.cart-item {
+  display: flex;
+  background: var(--fondo-blanco);
+  border: 3px solid #e0e0e0;
+  border-radius: var(--radio-card);
+  padding: var(--gap);
+  gap: 7rem;
+}
+
+.cart-item img {
+  width: 140px;
+  height: 140px;
+  object-fit: cover;
+  margin-left: 7rem;
+  border-radius: var(--radio-card);
+}
+
+.item-details p {
+  margin: 0.3rem 0;
+  font-size: 1.1rem;
+}
+
+.btn-qty {
+  background: #0071dc;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  width: 1.5rem;
+  height: 1.5rem;
+  font-size: 1rem;
+  line-height: 1;
+  cursor: pointer;
+  margin: 0 0.3rem;
+}
+
+.item-actions {
+  margin-left: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+/* Sidebar resumen */
+.cart-summary {
+  position: sticky;
+  top: var(--gap);
+  max-height: calc(100vh - 2 * var(--gap));
+  overflow-y: auto;
+  background: var(--fondo-blanco);
+  padding: var(--gap);
+  border: 3 px solid #e0e0e0;
+  border-radius: var(--radio-card);
+}
+
+.cart-summary .summary-details p {
+  text-align: left;
+  margin: 0.5rem 0;
+  font-size: 1.1rem;
+}
+
+/* Botón “Continuar” centrado */
+.cart-summary .btn-primary {
+  display: block;
+  width: auto;
+  margin: 0 auto var(--gap);
+}
+
+/* Mensaje carrito vacío */
+.empty-cart {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: var(--gap);
+  font-size: 1.8rem;
+  color: var(--texto);
+}
+
+/* ==========================================================================
+     9. INVENTARIO
+     ========================================================================== */
+.inventory-container {
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  padding: 1rem;
+  margin-bottom: 2rem;
+}
+
+.inventory-form {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-bottom: 1rem;
+}
+
+.inventory-form label {
+  font-weight: bold;
+  margin-right: 0.5rem;
+}
+
+.inventory-form input {
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.inventory-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 1rem;
+}
+
+.inventory-table th,
+.inventory-table td {
+  border: 1px solid #ddd;
+  padding: 0.75rem;
+}
+
+.inventory-table th {
+  background-color: #ecf0f1;
+  text-align: left;
+}
+
+.return-button {
+  background-color: #7f8c8d;
+  margin-left: 0.5rem;
+}
+
+.return-button:hover {
+  background-color: #95a5a6;
+}
+
+/* ==========================================================================
+     10. UTILIDADES FINALES
+     ========================================================================== */
+/* …otras utilidades globales que necesites … */

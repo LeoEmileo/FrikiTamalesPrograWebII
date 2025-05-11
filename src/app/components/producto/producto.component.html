@@ -1,0 +1,34 @@
+<h1 class="page-title">FrikiTamales</h1>
+
+<div class="catalog-container">
+  <h2 class="catalog-title">Nuestros Tamales y Complementos</h2>
+
+  <div class="product-grid">
+    <div *ngFor="let producto of productos" class="product-card">
+      <img [src]="producto.imagen" alt="{{ producto.nombre }}">
+
+      <div class="info">
+        <h3>{{ producto.nombre }}</h3>        
+        <!-- <p class="descripcion">{{ producto.descripcion }}</p> -->
+        <p>Precio: ${{ producto.precio }}</p>
+        <p>Cantidad disponible: {{ getStockVisual(producto) }}</p>
+        <button
+          class="btn btn-accept"
+          (click)="agregarAlCarrito(producto)"
+          [disabled]="getStockVisual(producto) === 0">
+          {{ getStockVisual(producto) === 0 ? 'Agotado' : 'Agregar al Carrito' }}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="button-group">
+  <button class="btn btn-large" (click)="irAlCarrito()">
+    <span class="btn-icon">🛒</span>
+    Ir al Carrito
+  </button>
+  <button class="btn btn-large" (click)="irAlInventario()">
+    Ir al Inventario
+  </button>
+</div>

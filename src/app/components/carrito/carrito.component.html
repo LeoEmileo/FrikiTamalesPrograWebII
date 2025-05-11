@@ -1,0 +1,46 @@
+<!-- carrito.component.html -->
+<h2 class="cart-page-title">Carrito de Compras</h2>
+
+<div class="cart-page">
+
+  <!-- CONTENIDO PRINCIPAL -->
+  <main class="cart-main">
+
+    <!-- 1) LISTA DE ÍTEMS -->
+    <section class="cart-items">
+      <div class="cart-item" *ngFor="let item of carrito">
+        <img [src]="item.producto.imagen" alt="{{ item.producto.nombre }}">
+        <div class="item-details">
+          <p><strong>{{ item.producto.nombre }}</strong></p>
+          <p>
+            Cantidad:
+            <button class="btn-qty" (click)="disminuirCantidad(item.producto)">–</button>
+            {{ item.cantidad }}
+            <button class="btn-qty" (click)="aumentarCantidad(item.producto)">+</button>
+          </p>
+          <p>Precio unitario: ${{ item.producto.precio }}</p>
+          <p>Precio total: ${{ item.producto.precio * item.cantidad }}</p>
+        </div>
+        <div class="item-actions"> <button class="btn btn-delete" (click)="eliminarProducto(item)">Eliminar</button>
+        </div>
+      </div>
+    </section>
+    <div> 
+      <div class="empty-cart" *ngIf="carrito.length === 0">
+        No hay ningún artículo aquí, prueba a agregar alguno desde la tienda.
+      </div> 
+      <button class="btn btn-big" (click)="navegarATienda()">Volver a la Tienda</button>
+      <button class="btn btn-warning" (click)="vaciarCarrito()">Vaciar Carrito</button>
+    </div>
+  </main> 
+
+  <!-- SIDEBAR DE RESUMEN -->
+  <aside class="cart-summary">
+    <div class="summary-details">
+      <p>Subtotal ({{ carrito.length }} artículo{{ carrito.length > 1 ? 's' : '' }}): <strong>${{ subtotal }}</strong></p>
+      <p>IVA (15% del total): <strong>${{ iva }}</strong></p>
+      <p>Total estimado: <strong>${{ total }}</strong></p>
+    </div>
+    <button class="btn full-width btn-primary btn-accept" (click)="pagarConPaypal()">Pagar con PayPal</button>
+    </aside>
+</div>

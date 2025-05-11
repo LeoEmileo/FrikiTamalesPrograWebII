@@ -1,0 +1,54 @@
+/* Sólo lo específico del componente */
+
+/* Espacio arriba y abajo para el título principal */
+.page-title {
+  margin: var(--gap) 0;
+  text-align: center;
+}
+
+/* Ajustes al contenedor para centrarlo y limitar ancho */
+.catalog-container {
+  margin: 0 auto var(--gap);
+  max-width: 1024px;
+  padding: var(--gap);
+}
+
+/* Espacio entre el subtítulo y el grid */
+.catalog-title {
+  margin-bottom: var(--gap);
+}
+
+/* Grupo de botones finales */
+.button-group {
+  text-align: center;
+  margin: var(--gap) 0;
+}
+
+
+/* Contenedor para los dos botones */
+.button-group {
+  display: flex;
+  justify-content: center;   /* los centra horizontalmente */
+  gap: var(--gap);           /* espacio entre ellos */
+  margin: var(--gap) 0;      /* margen arriba y abajo */
+}
+
+/* Sobrescribimos .btn para hacerlos más grandes */
+.button-group .btn {
+  padding: 0.75rem 1.5rem;   /* más alto y ancho */
+  font-size: 1.1rem;
+  min-width: 160px;          /* ancho mínimo */
+}
+
+/* Clase específica para icono */
+.btn-icon {
+  display: inline-block;
+  margin-right: 0.5em;       /* separa el icono del texto */
+  font-size: 1.2em;          /* agranda un poco el icono */
+  vertical-align: middle;
+}
+
+/* Si quieres un hover destacado */
+.button-group .btn:hover {
+  opacity: 0.9;
+}

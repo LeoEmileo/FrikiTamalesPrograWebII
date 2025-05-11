@@ -1,0 +1,83 @@
+ 
+  /* ===============================
+     3. INVENTARIO – TÍTULO
+     =============================== */
+  .inventory-title {
+    text-align: center;
+    margin-bottom: var(--gap);
+  }
+  
+  /* ===============================
+     4. INVENTARIO – CAJA CONTENEDORA
+     =============================== */
+  .inventory-container {
+    background: var(--fondo-blanco);
+    border: 1px solid #ddd;
+    border-radius: var(--radio-card);
+    padding: var(--gap);
+    margin-bottom: var(--gap);
+  }
+  
+  /* =====================================
+     5. INVENTARIO – FORMULARIO DE CREACIÓN
+     ===================================== */
+  .inventory-form {
+    display: grid;
+    align-items: center;
+    gap: var(--gap);
+    grid-template-columns:
+    max-content  /* La anchura justa para el texto “Nombre:” */
+    1fr          /* El resto del espacio */
+    max-content
+    1fr
+    max-content
+    1fr
+    max-content
+    1fr
+    
+    auto;        /* Solo lo que necesite */
+}    
+    
+  
+
+  .inventory-form label {
+    justify-self: end;        
+  }
+
+  .inventory-form input {
+    width: 100%;
+  min-width: 0;
+  }
+
+  /* evita que el botón crezca y lo centra verticalmente */
+  .inventory-form > button {
+    flex: 0 0 auto;
+    align-self: center;
+    margin-left: var(--gap);
+  }
+  
+  /* ============================
+     6. INVENTARIO – TABLA
+     ============================ */
+  .inventory-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: var(--gap);
+  }
+  .inventory-table th,
+  .inventory-table td {
+    border: 1px solid #ddd;
+    padding: 0.75rem;
+  }
+  .inventory-table th {
+    background: var(--gris-claro);
+    text-align: left;
+  }
+  
+  /* ===================================
+     7. INVENTARIO – BOTÓN DE RETORNO
+     =================================== */
+  .return-button {
+    margin-top: var(--gap);
+  }
+  
