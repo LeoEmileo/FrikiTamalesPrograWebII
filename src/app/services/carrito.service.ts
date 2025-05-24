@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Producto } from '../models/producto';
-import { ProductoService } from './producto.service';
+import { InventarioService } from './inventario.service';
 import { Observable, of } from 'rxjs';
 
 
@@ -11,7 +11,7 @@ export class CarritoService {
   // Internamente guardamos cada unidad agregada al carrito.
   private carrito: Producto[] = [];
 
-  constructor(private productoService: ProductoService) {
+  constructor(private inventarioService: InventarioService) {
     this.cargarCarritoDesdeLocalStorage();
   }
 
@@ -22,7 +22,7 @@ export class CarritoService {
    * Luego sincroniza la actualización del stock en el backend.
    */
   actualizarCantidad(producto: Producto, cambio: number): void {
-    this.productoService.obtenerProductos().subscribe(productos => {
+    this.inventarioService.obtenerProductos().subscribe(productos => {
       const prod = productos.find(p => p.id === producto.id);
       if (!prod) {
         console.error('Producto no encontrado.');
@@ -62,9 +62,17 @@ export class CarritoService {
   private actualizarStock(prod: Producto, cambio: number): void {
     // Si cambio > 0, se reduce el stock; si es negativo, se incrementa
     const nuevoStock = prod.cantidad - cambio;
-    const productoActualizado = { ...prod, cantidad: nuevoStock };
+    const productoActualizado = {
+      nombre: prod.nombre,
+      descripcion: prod.descripcion || '',
+      precio: prod.precio,
+      categoria: prod.categoria || '',
+      stock: nuevoStock,
+      imagen_url: prod.imagen
+    };
 
-    this.productoService.modificarProducto(productoActualizado).subscribe({
+
+    this.inventarioService.modificarProducto(prod.id, productoActualizado).subscribe({
       next: () => console.log(`Stock actualizado a ${nuevoStock} para producto ID ${prod.id}`),
       error: err => console.error(`Error al actualizar stock para producto ID ${prod.id}:`, err)
     });
@@ -101,6 +109,10 @@ export class CarritoService {
     const subtotal = this.obtenerTotal();
     const iva = subtotal * 0.16;
     const total = subtotal + iva;
+    const usuarioActual = JSON.parse(localStorage.getItem('usuario') || '{}');
+    const nombre = usuarioActual?.nombre_usuario || 'Cliente Anónimo';
+
+
 
     let xml = `<?xml version="1.0" encoding="UTF-8"?>\n`;
     xml += `<cfdi:Comprobante xmlns:cfdi="http://www.sat.gob.mx/cfd/4"\n`;
@@ -116,7 +128,7 @@ export class CarritoService {
     xml += `MetodoPago="PEIPAI">\n\n`;
 
     xml += `  <cfdi:Nombre="FrikiTamales"/>\n`;
-    xml += `  <cfdi:Nombre del receptor="Juan Pérez"/>\n\n`;
+    xml += `  <cfdi:Nombre del receptor="${nombre}"/>\n\n`;
     xml += `  <cfdi:Conceptos>\n`;
 
     carrito.forEach(item => {
@@ -179,7 +191,13 @@ export class CarritoService {
     }
   }
 
-
+  obtenerCarritoParaBackend(): { id: number, cantidad: number, precio: number }[] {
+    return this.obtenerCarritoAgrupado().map(item => ({
+      id: item.producto.id,
+      cantidad: item.cantidad,
+      precio: item.producto.precio
+    }));
+  }
 
   vaciarCarrito(): void {
     this.carrito = [];

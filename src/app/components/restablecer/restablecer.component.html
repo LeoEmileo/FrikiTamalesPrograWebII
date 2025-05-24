@@ -1,0 +1,20 @@
+<div class="form-container">
+  <h2>Establecer nueva contraseña</h2>
+
+  <form (ngSubmit)="enviar()" #formulario="ngForm">
+    <input
+      type="password"
+      name="nueva"
+      [(ngModel)]="nueva"
+      placeholder="Nueva contraseña"
+      required
+    />
+
+    <div class="btn-container">
+      <button class="btn-crear" type="submit" [disabled]="formulario.invalid">Guardar</button>
+    </div>
+  </form>
+
+  <p *ngIf="mensaje">{{ mensaje }}</p>
+  <p *ngIf="error">{{ error }}</p>
+</div>

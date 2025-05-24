@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { ProductoService} from '../../services/producto.service';
+import { InventarioService } from '../../services/inventario.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { Router } from '@angular/router';
-import { Producto } from '../../models/producto'
+import { Producto } from '../../models/producto';
+import { ProductoBackend } from '../../models/Producto-backend';
 
 @Component({
   selector: 'app-inventario',
@@ -15,51 +16,73 @@ import { Producto } from '../../models/producto'
 })
 export class InventarioComponent implements OnInit {
   productos: Producto[] = [];
-  // Modelo para crear un producto nuevo (sin id)
+
   productoModelo: Omit<Producto, 'id'> = {
     nombre: '',
     precio: 0,
     cantidad: 0,
     imagen: '',
-    //descripcion: ''
+    descripcion: '',
+    categoria: ''
   };
 
-  constructor(private productoService: ProductoService, private router: Router) {}
+  constructor(private inventarioService: InventarioService, private router: Router) {}
 
   ngOnInit(): void {
     this.cargarProductos();
   }
 
   cargarProductos() {
-    this.productoService.obtenerProductos().subscribe(data => {
+    this.inventarioService.obtenerProductos().subscribe(data => {
       this.productos = data;
     });
   }
 
   crearProducto() {
-    this.productoService.crearProducto(this.productoModelo as Producto)
-      .subscribe(() => {
-        this.cargarProductos();
-        this.productoModelo = { nombre: '', precio: 0, cantidad: 0, imagen: '', /*descripcion: ''*/ };
-      });
+    const nuevo: ProductoBackend = {
+      nombre: this.productoModelo.nombre,
+      descripcion: this.productoModelo.descripcion,
+      precio: this.productoModelo.precio,
+      categoria: this.productoModelo.categoria,
+      stock: this.productoModelo.cantidad,
+      imagen_url: this.productoModelo.imagen
+    };
+
+    this.inventarioService.crearProducto(nuevo).subscribe(() => {
+      this.cargarProductos();
+      this.productoModelo = {
+        nombre: '',
+        precio: 0,
+        cantidad: 0,
+        imagen: '',
+        descripcion: '',
+        categoria: ''
+      };
+    });
   }
 
   modificarProducto(producto: Producto) {
-    this.productoService.modificarProducto(producto)
-      .subscribe(() => {
-        this.cargarProductos();
-      });
+    const actualizado: ProductoBackend = {
+      nombre: producto.nombre,
+      descripcion: producto.descripcion,
+      precio: producto.precio,
+      categoria: producto.categoria,
+      stock: producto.cantidad,
+      imagen_url: producto.imagen
+    };
+
+    this.inventarioService.modificarProducto(producto.id, actualizado).subscribe(() => {
+      this.cargarProductos();
+    });
   }
 
   eliminarProducto(id: number) {
-    this.productoService.eliminarProducto(id)
-      .subscribe(() => {
-        this.cargarProductos();
-      });
+    this.inventarioService.eliminarProducto(id).subscribe(() => {
+      this.cargarProductos();
+    });
   }
 
   irATienda(): void {
     this.router.navigate(['/']);
   }
-
 }

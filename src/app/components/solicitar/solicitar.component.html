@@ -1,0 +1,20 @@
+<div class="form-container">
+  <h2>Recuperar contraseña</h2>
+
+  <form (ngSubmit)="solicitar()" #formulario="ngForm">
+    <input
+      type="email"
+      name="correo"
+      placeholder="Correo electrónico"
+      [(ngModel)]="correo"
+      required
+    />
+
+    <div class="btn-container">
+      <button class="btn-crear" type="submit">Enviar enlace</button>
+    </div>
+  </form>
+
+  <p *ngIf="mensaje">{{ mensaje }}</p>
+  <p *ngIf="error">{{ error }}</p>
+</div>

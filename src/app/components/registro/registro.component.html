@@ -1,0 +1,25 @@
+<div class="form-container">
+  <h2>Crea una cuenta</h2>
+
+  <form (ngSubmit)="registrar()" #formulario="ngForm">
+
+
+    <input type="text" name="nombre_usuario" [(ngModel)]="usuario.nombre_usuario" placeholder="Nombre de usuario" required />
+    <input type= "email" name="correo" placeholder="Correo electrónico" [(ngModel)]="usuario.correo" required />
+    <input type="password" name="contrasena" placeholder="Contraseña" [(ngModel)]="usuario.contrasena" required />
+    <input type="password" name="confirmacion" placeholder="Confirma contraseña" [(ngModel)]="confirmacion" required />
+    <input type="text" name="direccion" placeholder="Dirección" [(ngModel)]="usuario.direccion" required />
+    
+    <div class="btn-container">
+      <button class="btn-regresar" type="button" (click)="irAInicio()">Inicio</button>
+      <button class="btn-crear" type="submit" [disabled]="formulario.invalid">Crear cuenta</button>
+    </div>
+
+    <p style="text-align:center; margin-top: 1rem;">
+      ¿Ya tienes cuenta? <a routerLink="/login">Inicia sesión</a>
+    </p>
+  </form>
+
+  <p *ngIf="error" style="color: red; text-align:center;">{{ error }}</p>
+  <p *ngIf="mensaje" style="color: green; text-align:center;">{{ mensaje }}</p>
+</div>

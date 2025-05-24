@@ -1,74 +1,70 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, of } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Producto } from '../models/producto';
+import { ProductoBackend } from '../models/Producto-backend';
 
-
-
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable({ providedIn: 'root' })
 export class InventarioService {
-  private xmlUrl = 'assets/productos.xml';
-  private productos: Producto[] = [];
+  private apiUrl = 'http://localhost:3000/api/productos';
 
   constructor(private http: HttpClient) {}
 
- 
   obtenerProductos(): Observable<Producto[]> {
-    const saved = localStorage.getItem('productos');
-    if (saved) {
-      this.productos = JSON.parse(saved);
-      return of(this.productos);
-    }
-    return this.http.get(this.xmlUrl, { responseType: 'text' }).pipe(
-      map(xmlString => {
-        const parser = new DOMParser();
-        const xmlDoc = parser.parseFromString(xmlString, 'application/xml');
-        const productoNodes = xmlDoc.getElementsByTagName('producto');
-        const lista: Producto[] = [];
-        for (let i = 0; i < productoNodes.length; i++) {
-          const node = productoNodes[i];
-          const id = parseInt(node.getElementsByTagName('id')[0].textContent || '0', 10);
-          const nombre = node.getElementsByTagName('nombre')[0].textContent || '';
-          const precio = parseFloat(node.getElementsByTagName('precio')[0].textContent || '0');
-          const cantidad = parseInt(node.getElementsByTagName('cantidad')[0].textContent || '0', 10);
-          const imagen = node.getElementsByTagName('imagen')[0].textContent || '';
-          const descripcion = node.getElementsByTagName('descripcion')[0].textContent || '';
-          lista.push({ id, nombre, precio, cantidad, imagen, descripcion});
-        }
-        this.productos = lista;
-        localStorage.setItem('productos', JSON.stringify(lista));
-        return lista;
-      })
+    return this.http.get<any[]>(this.apiUrl).pipe(
+      map(rows =>
+        rows.map(row => ({
+          id:         row.id_producto,
+          nombre:     row.nombre,
+          precio:     row.precio,
+          cantidad:   row.stock,
+          imagen:     row.imagen_url,
+          descripcion: row.descripcion,
+          categoria:   row.categoria
+        } as Producto))
+      )
     );
   }
 
+  crearProducto(nuevo: ProductoBackend): Observable<any> {
+    return this.http.post(this.apiUrl, nuevo);
+  }
 
+  modificarProducto(id: number, actualizado: ProductoBackend): Observable<any> {
+    return this.http.put(`${this.apiUrl}/${id}`, actualizado);
+  }
 
- 
-  crearProducto(nuevo: Producto) {
-    if (nuevo.id === null || nuevo.id === undefined || nuevo.id === 0) {
-      const maxId = this.productos.reduce((acc, cur) => Math.max(acc, cur.id), 0);
-      nuevo.id = maxId + 1;
+  eliminarProducto(id: number): Observable<any> {
+    return this.http.delete(`${this.apiUrl}/${id}`);
+  }
+
+  sumarStock(producto: Producto, cantidad: number): Observable<Producto> {
+    const nuevoStock = producto.cantidad + cantidad;
+    const actualizado: ProductoBackend = {
+      nombre: producto.nombre,
+      descripcion: producto.descripcion,
+      precio: producto.precio,
+      categoria: producto.categoria,
+      stock: nuevoStock,
+      imagen_url: producto.imagen
+    };
+    return this.modificarProducto(producto.id, actualizado).pipe(map(() => ({ ...producto, cantidad: nuevoStock })));
+  }
+
+  restarStock(producto: Producto, cantidad: number): Observable<Producto> {
+    if (producto.cantidad < cantidad) {
+      return throwError(() => new Error('No hay suficiente stock'));
     }
-   
-    this.productos.push(nuevo);
+    const nuevoStock = producto.cantidad - cantidad;
+    const actualizado: ProductoBackend = {
+      nombre: producto.nombre,
+      descripcion: producto.descripcion,
+      precio: producto.precio,
+      categoria: producto.categoria,
+      stock: nuevoStock,
+      imagen_url: producto.imagen
+    };
+    return this.modificarProducto(producto.id, actualizado).pipe(map(() => ({ ...producto, cantidad: nuevoStock })));
   }
-
-
-  modificarProducto(productoModificado: Producto) {
-    const index = this.productos.findIndex(p => p.id === productoModificado.id);
-    if (index !== -1) {
-      this.productos[index] = productoModificado;
-    }
-  }
-
-  eliminarProducto(id: number) {
-    this.productos = this.productos.filter(p => p.id !== id);
-  }
-
-
- 
 }

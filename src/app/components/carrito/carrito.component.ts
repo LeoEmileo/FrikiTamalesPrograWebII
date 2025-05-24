@@ -33,17 +33,36 @@ export class CarritoComponent implements OnInit {
 
 
 
-pagarConPaypal(): void {
+  pagarConPaypal(): void {
     const subtotal = this.carritoService.obtenerTotal();
     const iva = subtotal * 0.16;
-    const total = subtotal + iva; 
+    const total = +(subtotal + iva).toFixed(2);
 
     if (total <= 0) {
       alert('Tu carrito está vacío.');
       return;
     }
 
-    this.http.post<any>('http://localhost:3000/api/pagar', { total }).subscribe({
+    const usuario = JSON.parse(localStorage.getItem('usuario') || '{}');
+
+    if (!usuario?.id) {
+      alert('Debes iniciar sesión para realizar el pago.');
+      return;
+    }
+
+    const carritoBackend = this.carritoService.obtenerCarritoAgrupado().map(item => ({
+      producto: {
+        id: item.producto.id,
+        precio: item.producto.precio
+      },
+      cantidad: item.cantidad
+    }));
+
+    this.http.post<any>('http://localhost:3000/api/pagar', {
+      total,
+      id_usuario: usuario.id,
+      carrito: carritoBackend
+    }).subscribe({
       next: (res) => {
         const link = res.links.find((l: any) => l.rel === 'approve');
         if (link) {
@@ -60,12 +79,14 @@ pagarConPaypal(): void {
   }
 
 
+
   actualizarCarrito() {
     this.carrito = this.carritoService.obtenerCarritoAgrupado();
     this.subtotal = this.carritoService.obtenerTotal();
     this.iva = this.subtotal * 0.16;
     this.total = this.subtotal + this.iva;
   }
+
 
   // Al aumentar o disminuir se llama al método unificado y se refresca la vista tras un retardo breve
   aumentarCantidad(producto: Producto) {
@@ -74,6 +95,7 @@ pagarConPaypal(): void {
       this.actualizarCarrito();
     }, 50);
   }
+
 
   disminuirCantidad(producto: Producto) {
     this.carritoService.actualizarCantidad(producto, -1);
@@ -89,7 +111,6 @@ pagarConPaypal(): void {
     // refresca la vista un poquito después (igual que en tus otros métodos)
     setTimeout(() => this.actualizarCarrito(), 50);
   }
-
 
 
   generarYDescargarXML() {
@@ -115,6 +136,7 @@ pagarConPaypal(): void {
 
   vaciarCarrito(): void {
     this.carritoService.vaciarCarrito();
+    setTimeout(() => this.actualizarCarrito(), 50);
   }
 
 

@@ -1,0 +1,11 @@
+<nav class="navbar">
+  <span *ngIf="auth.estaLogueado()">👤 {{ auth.obtenerUsuario()?.nombre_usuario }}</span> 
+
+
+  <a routerLink="/">Inicio</a>
+  <a *ngIf="auth.estaLogueado()" routerLink="/carrito">Carrito</a>
+  <a *ngIf="auth.estaLogueado() && auth.esAdmin()" routerLink="/inventario">Inventario</a>
+
+  <button *ngIf="auth.estaLogueado()" (click)="cerrarSesion()">Cerrar sesión</button>
+  <a *ngIf="!auth.estaLogueado()" routerLink="/login">Iniciar sesión</a>
+</nav>

@@ -3,6 +3,7 @@ import express from 'express';
 import productosRouter from './routes/productos.js';
 import cors from 'cors';
 import pagarRouter from './routes/pagar.js';
+import authRouter from './routes/auth.js';
 
 
 const app = express();
@@ -11,6 +12,7 @@ app.use(express.json());
 
 app.use('/api/productos', productosRouter);
 app.use('/api/pagar', pagarRouter);
+app.use('/api', authRouter);
 
 
 

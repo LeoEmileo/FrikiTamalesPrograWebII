@@ -1,60 +1,71 @@
-  <h2 class="inventory-title">Inventario de Productos</h2>
+<h2 class="inventory-title">Inventario de Productos</h2>
 
-  <div class="inventory-container">
-    <!-- FORMULARIO DE CREACIÓN -->
-    <div class="inventory-form">
-      <label for="nombre">Nombre:</label>
-      <input id="nombre" [(ngModel)]="productoModelo.nombre" />
+<div class="inventory-container">
+  <!-- FORMULARIO DE CREACIÓN -->
+  <div class="inventory-form">
+    <label for="nombre">Nombre:</label>
+    <input id="nombre" [(ngModel)]="productoModelo.nombre" />
 
-      <label for="precio">Precio:</label>
-      <input id="precio" type="number" [(ngModel)]="productoModelo.precio" />
+    <label for="precio">Precio:</label>
+    <input id="precio" type="number" [(ngModel)]="productoModelo.precio" />
 
-      <label for="cantidad">Cantidad (Stock):</label>
-      <input id="cantidad" type="number" [(ngModel)]="productoModelo.cantidad" />
+    <label for="cantidad">Cantidad (Stock):</label>
+    <input id="cantidad" type="number" [(ngModel)]="productoModelo.cantidad" />
 
-      <label for="imagen">Imagen (URL):</label>
-      <input id="imagen" [(ngModel)]="productoModelo.imagen" />
+    <label for="imagen">Imagen (URL):</label>
+    <input id="imagen" [(ngModel)]="productoModelo.imagen" />
 
-      
-      <!-- 
-        <label for="descripcion">Descripción:</label>
-      <textarea id="descripcion" rows="2" formControlName="descripcion" placeholder="Breve descripción del producto"></textarea>
-    -->
+    <label for="descripcion">Descripción:</label>
+    <textarea id="descripcion" [(ngModel)]="productoModelo.descripcion"></textarea>
 
-      <button class="btn btn-accept" (click)="crearProducto()">Crear Producto</button>
-    </div>
+    <label for="categoria">Categoría:</label>
+    <select id="categoria" [(ngModel)]="productoModelo.categoria">
+      <option value="">Selecciona</option>
+      <option value="tamal">Tamal</option>
+      <option value="complemento">Complemento</option>
+    </select>
 
-    <hr />
-
-    <!-- TABLA DE PRODUCTOS EXISTENTES -->
-    <table class="inventory-table">
-      <thead>
-        <tr>
-          <th>ID</th>
-          <th>Nombre</th>
-          <th>Precio</th>
-          <th>Cantidad</th>
-          <th>Imagen</th>
-          <!-- <th>Descripción</th> -->
-          <th>Acciones</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let p of productos">
-          <td>{{ p.id }}</td>
-          <td><input [(ngModel)]="p.nombre" /></td>
-          <td><input type="number" [(ngModel)]="p.precio" /></td>
-          <td><input type="number" [(ngModel)]="p.cantidad" /></td>
-          <td><input [(ngModel)]="p.imagen" /></td>
-          <!-- <td><input [(ngModel)]="p.descripcion" placeholder="Descripción"/></td> -->
-          <td>
-            <button class="btn btn-modify" (click)="modificarProducto(p)">Modificar</button>
-            <button class="btn btn-delete" (click)="eliminarProducto(p.id)">Eliminar</button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-
-    <!-- BOTÓN DE RETORNO -->
-    <button class="btn return-button" (click)="irATienda()">Volver a la Tienda</button>
+    <button class="btn btn-accept" (click)="crearProducto()">Crear Producto</button>
   </div>
+
+  <hr />
+
+  <!-- TABLA DE PRODUCTOS EXISTENTES -->
+  <table class="inventory-table">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Nombre</th>
+        <th>Precio</th>
+        <th>Cantidad</th>
+        <th>Imagen</th>
+        <th>Descripción</th>
+        <th>Categoría</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let p of productos">
+        <td>{{ p.id }}</td>
+        <td><input [(ngModel)]="p.nombre" /></td>
+        <td><input type="number" [(ngModel)]="p.precio" /></td>
+        <td><input type="number" [(ngModel)]="p.cantidad" /></td>
+        <td><input [(ngModel)]="p.imagen" /></td>
+        <td><input [(ngModel)]="p.descripcion" /></td>
+        <td>
+          <select [(ngModel)]="p.categoria">
+            <option value="">Selecciona</option>
+            <option value="tamal">Tamal</option>
+            <option value="complemento">Complemento</option>
+          </select>
+        </td>
+        <td>
+          <button class="btn btn-modify" (click)="modificarProducto(p)">Modificar</button>
+          <button class="btn btn-delete" (click)="eliminarProducto(p.id)">Eliminar</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <button class="btn return-button" (click)="irATienda()">Volver a la Tienda</button>
+</div>

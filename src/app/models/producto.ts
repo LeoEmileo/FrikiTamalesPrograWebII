@@ -4,7 +4,8 @@ export interface Producto {
     precio: number;
     cantidad: number; 
     imagen: string;
-    //descripcion: string;
+    descripcion: '';
+    categoria: '';
   }
   
   export interface ProductoCarrito extends Producto {

@@ -3,9 +3,9 @@
    ========================================================================== */
 :root {
   /* Colores */
-  --primario: #E76F51;
-  --secundario: #F4A261;
-  --acento: #E9C46A;
+  --primario: #f46a47;
+  --secundario: #db8b4a;
+  --acento: #d5aa3d;
   --texto: #333333;
   --fondo-blanco: #FFF8F0;
   --gris-claro: #F1E9E1;
@@ -439,7 +439,3 @@ input[type=password] {
   background-color: #95a5a6;
 }
 
-/* ==========================================================================
-     10. UTILIDADES FINALES
-     ========================================================================== */
-/* …otras utilidades globales que necesites … */
